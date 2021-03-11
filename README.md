@@ -23,4 +23,12 @@ Adding and retrieving indices:
   This happens with https requests
   see readme of https://github.com/elastic/elasticsearch for examples using curl
 
-
+Podcast data:
+  download at: https://kth.app.box.com/s/himcvmnuhm2sol4d5wo2nbrmarr7exd4?fbclid=IwAR2CWNaXv0OzWBSSW2fLfYNj5ygvUMySjJuCgIX4WXf4aIt-8-d4kbWyMeU
+  Structure of the data: 
+    each podcast is a Json file divided into pieces (transcripts) with the following structure
+      transcript: all the words as a text file
+      confidence: float number between 0 and 1
+      words: each word individually with start and end time
+    There is also a metadata file:
+      contains name, uri, description, publisher, language, episode name, duration and links to uri's and files in table form
