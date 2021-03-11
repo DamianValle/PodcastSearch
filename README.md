@@ -32,3 +32,4 @@ Podcast data:
       * words: each word individually with start and end time
     * There is also a metadata file:
       * contains name, uri, description, publisher, language, episode name, duration and links to uri's and files in table form
+  * There is a smaller (1.2 GB) test sample with the same structure as the other files: spotify-podcasts-2020-summarization-testset
