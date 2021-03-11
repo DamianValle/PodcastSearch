@@ -24,7 +24,7 @@ Adding and retrieving indices:
   see readme of https://github.com/elastic/elasticsearch for examples using curl
 
 Podcast data:
-  download at: https://kth.app.box.com/s/himcvmnuhm2sol4d5wo2nbrmarr7exd4?fbclid=IwAR2CWNaXv0OzWBSSW2fLfYNj5ygvUMySjJuCgIX4WXf4aIt-8-d4kbWyMeU
+  download at: see whatsapp link
   Structure of the data: 
     each podcast is a Json file divided into pieces (transcripts) with the following structure
       transcript: all the words as a text file
