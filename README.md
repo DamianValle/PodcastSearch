@@ -23,5 +23,6 @@ Adding and retrieving indices:
   This happens with https requests
   see readme of https://github.com/elastic/elasticsearch for examples using curl
 
-
+Podcast data:
+  https://kth.app.box.com/s/himcvmnuhm2sol4d5wo2nbrmarr7exd4?fbclid=IwAR2CWNaXv0OzWBSSW2fLfYNj5ygvUMySjJuCgIX4WXf4aIt-8-d4kbWyMeU
 
