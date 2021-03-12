@@ -1,7 +1,7 @@
 from datetime import datetime
 from elasticsearch import Elasticsearch
+import logging, json
 
-import logging
 def connect_elasticsearch():
     _es = None
     _es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
@@ -12,7 +12,7 @@ def connect_elasticsearch():
     return _es
   
 
-def create_index(es, index_name='podcasts', reset=False):
+def create_index(es, index_name='podcasts'):
     created = False
     # index settings
     settings = {
@@ -42,10 +42,7 @@ def create_index(es, index_name='podcasts', reset=False):
         }
     }
     try:
-        # if reset and es.indices.exists(index_name): es.indices.delete(index=index_name)
         if not es.indices.exists(index_name):
-            
-            
             print(es.indices.create(index=index_name, body=settings))
             print('Created Index')
         created = True
@@ -54,8 +51,27 @@ def create_index(es, index_name='podcasts', reset=False):
     finally:
         return created
 
+
+def index_file(es, filename, index_name='podcasts'):
+    with open(filename, 'r+') as f:
+        res = {}
+        data = json.load(f)
+        res["title"] = filename
+        clips = []
+        for clip_data in data["results"]:
+            clip_data = clip_data["alternatives"][0]
+            if(not ("transcript" in clip_data.keys())):
+                continue
+            clip = {"transcript": clip_data["transcript"], "confidence": clip_data["confidence"], "words": clip_data["words"]}
+            clips.append(clip)
+            
+        res["clips"] = clips
+
+    print(es.index(index=index_name, body=res))
+
+
 if __name__ == '__main__':
   logging.basicConfig(level=logging.ERROR)
   es = connect_elasticsearch()
-  create_index(es, reset=True)
-
+  create_index(es)
+  index_file(es, "sampleFile.json")
