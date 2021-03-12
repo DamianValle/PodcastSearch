@@ -42,11 +42,6 @@ if __name__ == '__main__':
                 "score_mode": "none"
                 }
             }}
-        search_object = {
-            'query': { 
-                "match_all": {}
-            }
-        }
         res = search(es, 'podcasts', search_object)
         for hit in res['hits']['hits']:
             print(hit["_source"]["title"])
