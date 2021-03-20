@@ -29,20 +29,19 @@ if __name__ == '__main__':
                                 "should": [
                                     {
                                     "match_phrase": {
-                                        "clips.words.word": "legitimacy"
+                                        "clips.words.word": "hello"
                                     }
                                     }
                                 ],
                                 "minimum_should_match": 1
                             }
                         },
-                        "score_mode": "none"
+                        "score_mode": "avg"
                         }
                 },
-                "score_mode": "none"
+                "score_mode": "avg"
                 }
             }}
         res = search(es, 'podcasts', search_object)
         for hit in res['hits']['hits']:
-            for h in hit["_source"]["clips"]:
-                print(h["transcript"])
+            print(hit["_source"]["title"])
