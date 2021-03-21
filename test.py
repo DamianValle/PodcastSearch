@@ -6,7 +6,7 @@ def print_all():
     i=1
     while True:
         try:
-            res = es.get(index="bank", id=i)
+            res = es.get(index="podcasts", id=i)
         except:
             print("done")
             break
@@ -20,11 +20,12 @@ s = Search(using=es)
 
 #print_all()
 
-res = es.search(index="bank", body={"query": {"match_all": {}}})
+res = es.search(index="podcasts", body={"query": {"match_all": {}}})
 
-print(res)
+#print(res)
 
 print("Got %d Hits:" % res['hits']['total']['value'])
 for hit in res['hits']['hits']:
-    print("%(email)s %(city)s: %(age)s" % hit["_source"])
+    #print(hit)
+    pass
 

@@ -1,6 +1,8 @@
 from datetime import datetime
 from elasticsearch import Elasticsearch
 import logging, json
+import os
+
 
 def connect_elasticsearch():
     _es = None
@@ -71,7 +73,19 @@ def index_file(es, filename, index_name='podcasts'):
 
 
 if __name__ == '__main__':
-  logging.basicConfig(level=logging.ERROR)
-  es = connect_elasticsearch()
-  create_index(es)
-  index_file(es, "sampleFile.json")
+    logging.basicConfig(level=logging.ERROR)
+    es = connect_elasticsearch()
+    create_index(es)
+
+    for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset'):
+        for filename in files:
+            filepath = subdir + os.sep + filename
+            if filepath.endswith(".tsv"):
+                print (filepath)
+                #metadata
+            if filepath.endswith(".json"):
+                #actual data
+                print (filepath)
+                index_file(es, filepath)
+
+    #index_file(es, "sampleFile.json")
