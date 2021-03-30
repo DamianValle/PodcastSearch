@@ -20,7 +20,8 @@ def create_index(es, index_name='podcasts'):
     settings = {
         "settings": {
             "number_of_shards": 1,
-            "number_of_replicas": 0
+            "number_of_replicas": 0,
+            "index": {"mapping" : {"nested_objects": {"limit": 50000}}},
         },
         "mappings": {
             "properties": {
@@ -75,6 +76,7 @@ def index_file(es, filename, index_name='podcasts'):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.ERROR)
     es = connect_elasticsearch()
+    # es.indices.delete(index='podcasts', ignore=[400, 404])
     create_index(es)
 
     for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset'):
