@@ -76,7 +76,7 @@ def index_file(es, filename, index_name='podcasts'):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.ERROR)
     es = connect_elasticsearch()
-    # es.indices.delete(index='podcasts', ignore=[400, 404])
+    #es.indices.delete(index='podcasts', ignore=[400, 404])
     create_index(es)
 
     for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset'):
