@@ -2,7 +2,7 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 import logging, json
 import pprint
-from utils import find_time
+from utils import *
 
 search_word = "you"
 
@@ -57,6 +57,7 @@ if __name__ == '__main__':
         # pp.pprint(res["explanation"])
         for hit in res['hits']['hits']:
             print(hit["_source"]["title"])
+            print("uri: ", parse_filename2uri(hit["_source"]["title"]))
             print(hit["_score"])
             # for item in hit["_source"]["clips"]:
             #     if search_word in item["transcript"]:
