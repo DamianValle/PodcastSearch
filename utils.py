@@ -15,6 +15,7 @@ def parse_filename2uri(filename):
     """
     Parser utility
     filename: "../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset/podcasts-transcripts-summarization-testset/1/A/show_1aSZnvp5sO3y6XkSHSFhw0/2jvWqUD1asYvFsDAFsozkZ.json"
-    output: "1aSZnvp5sO3y6XkSHSFhw0"
+    output: "1aSZnvp5sO3y6XkSHSFhw0, 2jvWqUD1asYvFsDAFsozkZ"
+    output: show_uri, episode_uri
     """
-    return filename.split("_")[1][:-5].split("/")[0]
+    return filename.split("_")[1][:-5].split("/")[0], filename.split("_")[1][:-5].split("/")[1]
