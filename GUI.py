@@ -9,13 +9,13 @@ left_column = [
     ],
     [
         sg.Listbox(
-            values=['','','','','','','','','','','','','','Results will appear here'], enable_events=True, size=(60, 30), key="results"  # results
+            values=['','','','','','','','','','','','','',' Results will appear here'], enable_events=True, size=(60, 30), key="results"  # results
         ),
     ],
 ]
 
 right_column = [
-    [sg.Text(size=(60, 30), key="extra_info", text="\n \n \n \n \n \n \n \n \n \n \n \n \n \n click on a transcript for extra info")]
+    [sg.Text(size=(60, 30), key="extra_info", text="\n \n \n \n \n \n \n \n \n \n \n \n \n \n")]
 ]
 layout = [
     [
@@ -38,6 +38,7 @@ while True:
         """
         query_result = search.doSearch(query)
         window["results"].update(query_result[0])
+        window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a transcript for extra info")
     if event == 'results':
         print("ok")
         ind = (query_result[0].index(values['results'][0]))

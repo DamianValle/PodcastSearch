@@ -89,7 +89,7 @@ def doSearch(word):
                 if search_word in item["transcript"]:
                     find_time(search_word, item)
             print(hit["metadata"])
-            result.append(hit["metadata"]["_source"]["show_name"] + ", " + hit["metadata"]["_source"]["episode_name"])
+            result.append(" " + hit["metadata"]["_source"]["show_name"] + ", " + hit["metadata"]["_source"]["episode_name"])
             extraInfo.append(hit["metadata"]["_source"]["episode_description"])
         print(result)
         return [result,extraInfo]
