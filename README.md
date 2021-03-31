@@ -33,3 +33,10 @@ Podcast data:
     * There is also a metadata file:
       * contains name, uri, description, publisher, language, episode name, duration and links to uri's and files in table form
   * There is a smaller (1.2 GB) test sample with the same structure as the other files: spotify-podcasts-2020-summarization-testset
+  
+  
+  
+  needed for GUI:
+  sudo apt-get install python3-tk
+  sudo apt install tkinter
+

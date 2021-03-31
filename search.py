@@ -19,10 +19,12 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-if __name__ == '__main__':
+
+
+def doSearch(word):
     es = connect_elasticsearch()
     if es is not None:
-        search_object = {'query': { 
+        search_object = {'query': {
            "nested": {
                 "path": "clips",
                 "query": {
@@ -47,7 +49,15 @@ if __name__ == '__main__':
                 }
             }}
         res = search(es, 'podcasts', search_object)
+        result = [""]  # List of strings displayed in GUI
         for hit in res['hits']['hits']:
             for item in hit["_source"]["clips"]:
                 if search_word in item["transcript"]:
                     find_time(search_word, item)
+                result.append(item["transcript"])
+        print(result)
+        return result
+
+
+if __name__ == '__main__':
+    doSearch(search_word)
