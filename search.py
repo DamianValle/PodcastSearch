@@ -2,7 +2,8 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 import logging, json
 import pprint
-from utils import find_time
+from utils import *
+import pprint
 
 search_word = "porn"
 
@@ -19,36 +20,68 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-
-
 def doSearch(word):
     es = connect_elasticsearch()
     if es is not None:
-        search_object = {'query': {
+        search_object = { "from" : 0,
+        "size" : 10,
+        # 'explain': True,
+        'query': { 
            "nested": {
                 "path": "clips",
                 "query": {
-                    "nested": {
-                        "path": "clips.words",
-                        "query": {
-                            "bool": {
-                                "should": [
-                                    {
-                                    "match_phrase": {
-                                        "clips.words.word": search_word
-                                    }
-                                    }
-                                ],
-                                "minimum_should_match": 1
+                    "bool": {
+                        "should": [
+                            {
+                            "match_phrase": {
+                                "clips.transcript": word
                             }
-                        },
-                        "score_mode": "avg"
-                        }
+                            }
+                        ],
+                        "minimum_should_match": 1
+                    }
                 },
                 "score_mode": "avg"
                 }
             }}
+
         res = search(es, 'podcasts', search_object)
+
+        for hit in res['hits']['hits']:
+
+            elem = {}
+
+            #print(hit["_source"]["title"])
+            #print("uri: ", parse_filename2uri(hit["_source"]["title"]))
+
+            show_uri, episode_uri = parse_filename2uri(hit["_source"]["title"])
+
+            meta_search_object = {
+                "query": {
+                    "bool": {
+                    "must": [
+                        {
+                        "match": {
+                            "show_uri": show_uri
+                        }
+                        },
+                        {
+                        "match": {
+                            "episode_uri": episode_uri
+                        }
+                        }
+                    ]
+                    }
+                }
+            }
+
+            metadata = search(es, 'metadata', meta_search_object)
+
+            hit["metadata"] = metadata['hits']['hits']
+
+        for hit in res['hits']['hits']:
+            pprint.pprint(hit["_score"])
+            
         result = [""]  # List of strings displayed in left side of GUI
         extraInfo = [""]  # Extra info in right side of GUI
         for hit in res['hits']['hits']:
@@ -58,7 +91,7 @@ def doSearch(word):
                 result.append(item["transcript"])
         print(result)
         return result
-
+            
 
 if __name__ == '__main__':
     doSearch(search_word)
