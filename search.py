@@ -48,6 +48,7 @@ if __name__ == '__main__':
             }}
         res = search(es, 'podcasts', search_object)
         for hit in res['hits']['hits']:
+            print(hit["_source"]["title"])
             for item in hit["_source"]["clips"]:
                 if search_word in item["transcript"]:
                     find_time(search_word, item)
