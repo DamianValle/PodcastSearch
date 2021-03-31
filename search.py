@@ -49,7 +49,8 @@ def doSearch(word):
                 }
             }}
         res = search(es, 'podcasts', search_object)
-        result = [""]  # List of strings displayed in GUI
+        result = [""]  # List of strings displayed in left side of GUI
+        extraInfo = [""]  # Extra info in right side of GUI
         for hit in res['hits']['hits']:
             for item in hit["_source"]["clips"]:
                 if search_word in item["transcript"]:

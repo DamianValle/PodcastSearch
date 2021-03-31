@@ -2,18 +2,29 @@ import PySimpleGUI as sg
 import search
 
 sg.theme('DarkGreen')  # Add a touch of color
-layout = [
+left_column = [
     [
         sg.In(size=(50, 1), enable_events=True, key="query_input"),  # search box
         sg.Button('Search'),  # search button
     ],
     [
         sg.Listbox(
-            values=[], enable_events=True, size=(60, 30), key="results"  # results button
-        )
+            values=['/n /n Results will appear here'], enable_events=True, size=(60, 30), key="results"  # results button
+        ),
     ],
 ]
 
+right_column = [
+    [sg.Text("Click on a transcript for more info")],
+    [sg.Text(size=(40, 1), key="extra_info")],
+]
+layout = [
+    [
+        sg.Column(left_column),
+        sg.VSeperator(),
+        sg.Column(right_column),
+    ]
+]
 window = sg.Window("Podcast search", layout)
 # Run the Event Loop
 while True:
