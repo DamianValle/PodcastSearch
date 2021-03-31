@@ -20,8 +20,7 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-if __name__ == "__main__":
-
+def doSearch(word):
     es = connect_elasticsearch()
     if es is not None:
         search_object = { "from" : 0,
@@ -35,7 +34,7 @@ if __name__ == "__main__":
                         "should": [
                             {
                             "match_phrase": {
-                                "clips.transcript": search_word
+                                "clips.transcript": word
                             }
                             }
                         ],
@@ -83,4 +82,16 @@ if __name__ == "__main__":
         for hit in res['hits']['hits']:
             pprint.pprint(hit["_score"])
             
+        result = [""]  # List of strings displayed in left side of GUI
+        extraInfo = [""]  # Extra info in right side of GUI
+        for hit in res['hits']['hits']:
+            for item in hit["_source"]["clips"]:
+                if search_word in item["transcript"]:
+                    find_time(search_word, item)
+                result.append(item["transcript"])
+        print(result)
+        return result
             
+
+if __name__ == '__main__':
+    doSearch(search_word)
