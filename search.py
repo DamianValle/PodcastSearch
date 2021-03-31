@@ -43,10 +43,20 @@ if __name__ == '__main__':
                 "score_mode": "avg"
                 }
             }}
+##        search_object = {'query': {'match': {'show_description': 'this'} }
+##            }
+##        res = search(es, 'metadata', search_object)
+##        for hit in res['hits']['hits']:
+##            print(hit["_source"]["show_uri"])
+##            print(hit["_source"]["show_name"])
+##            print(hit["_source"]["show_description"])
+
+        
         res = search(es, 'podcasts', search_object)
         # pp = pprint.PrettyPrinter(indent=4)
         # pp.pprint(res["explanation"])
         for hit in res['hits']['hits']:
+            print(hit["_source"]["title"])
             print(hit["_score"])
             # for item in hit["_source"]["clips"]:
             #     if search_word in item["transcript"]:
