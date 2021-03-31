@@ -117,8 +117,9 @@ def index_file(es, filename, index_name='podcasts'):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.ERROR)
     es = connect_elasticsearch()
+
     # es.indices.delete(index='metadata', ignore=[400, 404])
-    #create_index(es)
+    create_index(es)
 
     index_metadata = False
     if index_metadata:
