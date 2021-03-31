@@ -56,8 +56,18 @@ if __name__ == '__main__':
         # pp = pprint.PrettyPrinter(indent=4)
         # pp.pprint(res["explanation"])
         for hit in res['hits']['hits']:
-            print(hit["_source"]["title"])
-            print("uri: ", parse_filename2uri(hit["_source"]["title"]))
+            #print(hit["_source"]["title"])
+            #print("uri: ", parse_filename2uri(hit["_source"]["title"]))
+
+            meta_search_object = {
+                'query': {'match': {'show_uri': parse_filename2uri(hit["_source"]["title"])}}
+                }
+
+            metadata = search(es, 'metadata', meta_search_object)
+
+            for h in metadata['hits']['hits']:
+                print(h["_source"]["show_description"])
+            
             print(hit["_score"])
             # for item in hit["_source"]["clips"]:
             #     if search_word in item["transcript"]:

@@ -89,11 +89,18 @@ def create_and_index_metadata(es, index_name='metadata'):
         print(headers)
         for row in read_tsv:
             res = {}
-            res["show_uri"] = row[0]
-            res["show_name"] = row[1]
-            res["show_description"] = row[2]
+            counter = 0
+            # To-do: maybe look into putting episodes from the same podcast nested under the podcast
+            columns = ["show_uri", "show_name", "show_description",
+                       "publisher", "language", "rss_link",
+                       "episode_uri", "episode_name", "episode_description",
+                       "duration"]
 
-            print(es.index(index=index_name, body=res))
+            for col in columns:
+                res[col] = row[counter]
+                counter += 1
+
+            es.index(index=index_name, body=res)
     
 
 def index_file(es, filename, index_name='podcasts'):
@@ -111,29 +118,29 @@ def index_file(es, filename, index_name='podcasts'):
             
         res["clips"] = clips
 
-    print(es.index(index=index_name, body=res))
+    es.index(index=index_name, body=res)
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.ERROR)
     es = connect_elasticsearch()
 
-    # es.indices.delete(index='metadata', ignore=[400, 404])
+    es.indices.delete(index='podcasts', ignore=[400, 404])
     create_index(es)
 
-    index_metadata = False
+    index_metadata = True
     if index_metadata:
+        es.indices.delete(index='metadata', ignore=[400, 404])
         create_and_index_metadata(es)
 
     for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset'):
         for filename in files:
             filepath = subdir + os.sep + filename
-            if filepath.endswith(".tsv"):
-                print (filepath)
-                #metadata
+            #if filepath.endswith(".tsv"):
+                #print (filepath)
             if filepath.endswith(".json"):
                 #actual data
-                print (filepath)
+                #print (filepath)
                 index_file(es, filepath)
 
     #index_file(es, "sampleFile.json")
