@@ -50,15 +50,16 @@ if __name__ == '__main__':
 ##            print(hit["_source"]["show_uri"])
 ##            print(hit["_source"]["show_name"])
 ##            print(hit["_source"]["show_description"])
-
         
         res = search(es, 'podcasts', search_object)
-        # pp = pprint.PrettyPrinter(indent=4)
+        pp = pprint.PrettyPrinter(indent=2)
         # pp.pprint(res["explanation"])
         for hit in res['hits']['hits']:
             print(hit["_source"]["title"])
             print("uri: ", parse_filename2uri(hit["_source"]["title"]))
-            print(hit["_score"])
-            # for item in hit["_source"]["clips"]:
-            #     if search_word in item["transcript"]:
-            #         find_time(search_word, item)
+            print("score:" + str(hit["_score"]))
+            for item in hit["_source"]["clips"]:
+                # pp.pprint(item)
+                print("confidence:" + str(item["confidence"]))
+                if search_word in item["transcript"]:
+                    find_time(search_word, item)
