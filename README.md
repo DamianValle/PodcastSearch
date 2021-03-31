@@ -24,7 +24,7 @@ Adding and retrieving indices:
   * see readme of https://github.com/elastic/elasticsearch for examples using curl
 
 Podcast data:
-  * download at: see whatsapp link
+  * download at: [Spotify Podcast Dataset](https://podcastsdataset.byspotify.com/)
   * Structure of the data: 
     * each podcast is a Json file divided into pieces (transcripts) with the following structure
       * transcript: all the words as a text file
