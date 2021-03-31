@@ -86,7 +86,8 @@ def create_and_index_metadata(es, index_name='metadata'):
         print(str(ex))
 
     fileDir = os.path.dirname(os.path.realpath('__file__'))
-    filename = '..\podcasts-no-audio-13GB\spotify-podcasts-2020-summarization-testset\metadata-summarization-testset.tsv'
+    filename = '../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset/metadata-summarization-testset.tsv'
+    #filename = '..\podcasts-no-audio-13GB\spotify-podcasts-2020-summarization-testset\metadata-summarization-testset.tsv'
     print(os.path.join(fileDir, filename))
 
     with open(os.path.join(fileDir, filename), 'r+', encoding="utf8") as f:
@@ -129,25 +130,29 @@ def index_file(es, filename, index_name='podcasts'):
 
 
 if __name__ == '__main__':
+
+    index_metadata = True
+    index_podcasts = False
+
     logging.basicConfig(level=logging.ERROR)
     es = connect_elasticsearch()
 
-    es.indices.delete(index='podcasts', ignore=[400, 404])
-    create_index(es)
-
-    index_metadata = True
+    
     if index_metadata:
         es.indices.delete(index='metadata', ignore=[400, 404])
         create_and_index_metadata(es)
 
-    for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset'):
-        for filename in files:
-            filepath = subdir + os.sep + filename
-            #if filepath.endswith(".tsv"):
-                #print (filepath)
-            if filepath.endswith(".json"):
-                #actual data
-                #print (filepath)
-                index_file(es, filepath)
+    if index_podcasts:
+        es.indices.delete(index='podcasts', ignore=[400, 404])
+        create_index(es)
 
-    #index_file(es, "sampleFile.json")
+        for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset'):
+            for filename in files:
+                filepath = subdir + os.sep + filename
+                #if filepath.endswith(".tsv"):
+                    #print (filepath)
+                if filepath.endswith(".json"):
+                    #actual data
+                    #print (filepath)
+                    index_file(es, filepath)
+

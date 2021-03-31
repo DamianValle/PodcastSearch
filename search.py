@@ -77,7 +77,7 @@ def doSearch(word):
 
             metadata = search(es, 'metadata', meta_search_object)
 
-            hit["metadata"] = metadata['hits']['hits']
+            hit["metadata"] = metadata['hits']['hits'][0]
 
         for hit in res['hits']['hits']:
             pprint.pprint(hit["_score"])
@@ -88,7 +88,9 @@ def doSearch(word):
             for item in hit["_source"]["clips"]:
                 if search_word in item["transcript"]:
                     find_time(search_word, item)
-                result.append(item["transcript"])
+            print(hit["metadata"])
+            result.append(hit["metadata"]["_source"]["show_name"] + ", " + hit["metadata"]["_source"]["episode_name"])
+            extraInfo.append(hit["metadata"]["_source"]["episode_description"])
         print(result)
         return result
             
