@@ -92,7 +92,7 @@ def doSearch(word):
             result.append(hit["metadata"]["_source"]["show_name"] + ", " + hit["metadata"]["_source"]["episode_name"])
             extraInfo.append(hit["metadata"]["_source"]["episode_description"])
         print(result)
-        return result
+        return [result,extraInfo]
             
 
 if __name__ == '__main__':
