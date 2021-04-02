@@ -132,7 +132,7 @@ def index_file(es, filename, index_name='podcasts'):
 if __name__ == '__main__':
 
     index_metadata = True
-    index_podcasts = False
+    index_podcasts = True
 
     logging.basicConfig(level=logging.ERROR)
     es = connect_elasticsearch()

@@ -20,11 +20,14 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-def doSearch(word):
+def doSearch(word, k=10):
+
+    result = {}
+
     es = connect_elasticsearch()
     if es is not None:
         search_object = { "from" : 0,
-        "size" : 10,
+        "size" : k,
         # 'explain': True,
         'query': { 
            "nested": {
@@ -48,8 +51,6 @@ def doSearch(word):
         res = search(es, 'podcasts', search_object)
 
         for hit in res['hits']['hits']:
-
-            elem = {}
 
             #print(hit["_source"]["title"])
             #print("uri: ", parse_filename2uri(hit["_source"]["title"]))
@@ -78,20 +79,17 @@ def doSearch(word):
             metadata = search(es, 'metadata', meta_search_object)
 
             hit["metadata"] = metadata['hits']['hits'][0]
-
-        for hit in res['hits']['hits']:
-            pprint.pprint(hit["_score"])
             
-        result = [""]  # List of strings displayed in left side of GUI
-        extraInfo = [""]  # Extra info in right side of GUI
+        result["results"] = [""]  # List of strings displayed in left side of GUI
+        result["extraInfo"] = [""]  # Extra info in right side of GUI
         for hit in res['hits']['hits']:
             for item in hit["_source"]["clips"]:
                 if search_word in item["transcript"]:
                     find_time(search_word, item)
-            print(hit["metadata"])
-            result.append(hit["metadata"]["_source"]["show_name"] + ", " + hit["metadata"]["_source"]["episode_name"])
-            extraInfo.append(hit["metadata"]["_source"]["episode_description"])
-        print(result)
+            result["results"].append(" " + hit["metadata"]["_source"]["show_name"] + ": " + hit["metadata"]["_source"]["episode_name"])
+            result["extraInfo"].append(hit["metadata"]["_source"]["episode_description"])
+
+
         return result
             
 
