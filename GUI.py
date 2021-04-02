@@ -6,7 +6,7 @@ left_column = [
     [
         sg.In(size=(50, 1), enable_events=True, key="query_input"),  # search box
         sg.Button('Search'),  # search button
-        sg.Combo([i for i in range(1, 101)], size=(10, 10), key="k"),
+        sg.Combo([i for i in range(1, 101)], size=(10, 10), key="k", default_value=10),
         sg.Text(" results")
     ],
     [
@@ -26,8 +26,9 @@ layout = [
         sg.Column(right_column),
     ]
 ]
+
 window = sg.Window("Podcast search", layout)
-# Run the Event Loop
+
 while True:
     event, values = window.read()
     if event == "Exit" or event == sg.WIN_CLOSED:
@@ -38,15 +39,12 @@ while True:
         The variable query_result is a list of strings.
         These strings will be shown as a result in the GUI.
         """
-        if not values["k"]:
-            query_result = search.doSearch(query)
-        else:
-            query_result = search.doSearch(query, values["k"])
-        window["results"].update(query_result[0])
+        query_result = search.doSearch(query, values["k"])
+        window["results"].update(query_result["results"])
         window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a transcript for extra info")
     if event == 'results':
         print("ok")
-        ind = (query_result[0].index(values['results'][0]))
-        window["extra_info"].update(query_result[1][ind])
+        ind = (query_result["results"].index(values['results'][0]))
+        window["extra_info"].update(query_result["extraInfo"][ind])
 
 window.close()
