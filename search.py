@@ -4,6 +4,7 @@ import logging, json
 import pprint
 from utils import *
 import pprint
+from results import Results
 
 search_word = "porn"
 
@@ -78,19 +79,9 @@ def doSearch(word, k=10):
 
             metadata = search(es, 'metadata', meta_search_object)
 
-            hit["metadata"] = metadata['hits']['hits'][0]
-            
-        result["results"] = [""]  # List of strings displayed in left side of GUI
-        result["extraInfo"] = [""]  # Extra info in right side of GUI
-        for hit in res['hits']['hits']:
-            for item in hit["_source"]["clips"]:
-                if search_word in item["transcript"]:
-                    find_time(search_word, item)
-            result["results"].append(" " + hit["metadata"]["_source"]["show_name"] + ": " + hit["metadata"]["_source"]["episode_name"])
-            result["extraInfo"].append(hit["metadata"]["_source"]["episode_description"])
+            hit["metadata"] = metadata['hits']['hits'][0]        
 
-
-        return result
+        return Results.createFromSearch(res, search_word=word)
             
 
 if __name__ == '__main__':

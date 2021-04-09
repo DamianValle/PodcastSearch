@@ -17,17 +17,20 @@ left_column = [
 ]
 
 right_column = [
-    [sg.Text(size=(60, 30), key="extra_info", text="\n \n \n \n \n \n \n \n \n \n \n \n \n \n")]
+    [sg.MLine(key='extra_info', size=(60, 30), autoscroll=False)]
+    # [sg.Text(size=(60, 30), key="extra_info", text="\n \n \n \n \n \n \n \n \n \n \n \n \n \n")]
 ]
 layout = [
     [
         sg.Column(left_column),
         sg.VSeperator(),
-        sg.Column(right_column),
+        sg.Column(right_column)
     ]
 ]
 
 window = sg.Window("Podcast search", layout)
+cprint = sg.cprint
+sg.cprint_set_output_destination(window, 'extra_info')
 
 while True:
     event, values = window.read()
@@ -40,11 +43,14 @@ while True:
         These strings will be shown as a result in the GUI.
         """
         query_result = search.doSearch(query, values["k"])
-        window["results"].update(query_result["results"])
+        window["results"].update(query_result.show_episode_names())
         window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a transcript for extra info")
     if event == 'results':
         print("ok")
-        ind = (query_result["results"].index(values['results'][0]))
-        window["extra_info"].update(query_result["extraInfo"][ind])
+        [show_name, episode_name] = values['results'][0].split(" : ")
+        window["extra_info"].update("")
+        query_result.print_description(cprint, show_name, episode_name)
+        # cprint(query_result.string_description(show_name, episode_name), text_color="black", background_color="white")
+        window["extra_info"].set_vscroll_position(0)
 
 window.close()
