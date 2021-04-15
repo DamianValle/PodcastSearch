@@ -4,20 +4,21 @@ import search
 sg.theme('DarkBlue13')  # Add a touch of color
 left_column = [
     [
-        sg.In(size=(50, 1), enable_events=True, key="query_input"),  # search box
+        sg.In(size=(30, 1), enable_events=True, key="query_input"),  # search box
         sg.Button('Search'),  # search button
         sg.Combo([i for i in range(1, 101)], size=(10, 10), key="k", default_value=10),
-        sg.Text(" results")
+        sg.Combo(['sum', 'avg', 'max', 'min'], size=(10, 10), key="score_selector", default_value='avg')
+
     ],
     [
         sg.Listbox(
-            values=['','','','','','','','','','','','','','Results will appear here'], enable_events=True, size=(60, 30), key="results"  # results
+            values=['','','','','','','','','','','','','','Results will appear here'], enable_events=True, size=(70, 30), key="results"  # results
         ),
     ],
 ]
 
 right_column = [
-    [sg.MLine(key='extra_info', size=(60, 30), autoscroll=False)]
+    [sg.MLine(key='extra_info', size=(70, 30), autoscroll=False)]
     # [sg.Text(size=(60, 30), key="extra_info", text="\n \n \n \n \n \n \n \n \n \n \n \n \n \n")]
 ]
 layout = [
@@ -42,7 +43,7 @@ while True:
         The variable query_result is a list of strings.
         These strings will be shown as a result in the GUI.
         """
-        query_result = search.doSearch(query, 'avg', values["k"])
+        query_result = search.doSearch(query, values["score_selector"], values["k"])
 
         if len(query_result.show_episode_names())==0:
             window["results"].update(['','','','','','','','','','','','','' ,'No results were found'])
