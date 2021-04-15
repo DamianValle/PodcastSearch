@@ -11,7 +11,7 @@ left_column = [
     ],
     [
         sg.Listbox(
-            values=['','','','','','','','','','','','','',' Results will appear here'], enable_events=True, size=(60, 30), key="results"  # results
+            values=['','','','','','','','','','','','','','Results will appear here'], enable_events=True, size=(60, 30), key="results"  # results
         ),
     ],
 ]
@@ -31,7 +31,7 @@ layout = [
 window = sg.Window("Podcast search", layout)
 cprint = sg.cprint
 sg.cprint_set_output_destination(window, 'extra_info')
-
+results_available = False
 while True:
     event, values = window.read()
     if event == "Exit" or event == sg.WIN_CLOSED:
@@ -42,15 +42,21 @@ while True:
         The variable query_result is a list of strings.
         These strings will be shown as a result in the GUI.
         """
-        query_result = search.doSearch(query, values["k"])
-        window["results"].update(query_result.show_episode_names())
+        query_result = search.doSearch(query, 'avg', values["k"])
+
+        if len(query_result.show_episode_names())==0:
+            window["results"].update(['','','','','','','','','','','','','' ,'No results were found'])
+            results_available=False
+        else:
+            window["results"].update(query_result.show_episode_names())
+            results_available=True
         window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a transcript for extra info")
     if event == 'results':
-        print("ok")
-        [show_name, episode_name] = values['results'][0].split(" : ")
-        window["extra_info"].update("")
-        query_result.print_description(cprint, show_name, episode_name)
-        # cprint(query_result.string_description(show_name, episode_name), text_color="black", background_color="white")
-        window["extra_info"].set_vscroll_position(0)
+        if results_available:
+            [show_name, episode_name] = values['results'][0].split(" : ")
+            window["extra_info"].update("")
+            query_result.print_description(cprint, show_name, episode_name)
+            # cprint(query_result.string_description(show_name, episode_name), text_color="black", background_color="white")
+            window["extra_info"].set_vscroll_position(0)
 
 window.close()

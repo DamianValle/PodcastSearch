@@ -21,7 +21,7 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-def doSearch(word, k=10):
+def doSearch(word, score_mode,k=10,):
 
     result = {}
 
@@ -45,7 +45,7 @@ def doSearch(word, k=10):
                         "minimum_should_match": 1
                     }
                 },
-                "score_mode": "avg"
+                "score_mode": score_mode
                 }
             }}
 
