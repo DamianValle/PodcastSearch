@@ -38,12 +38,11 @@ while True:
     if event == "Exit" or event == sg.WIN_CLOSED:
         break
     if event == "Search":
-        query = values["query_input"]
         """
         The variable query_result is a list of strings.
         These strings will be shown as a result in the GUI.
         """
-        query_result = search.doSearch(query, values["score_selector"], values["k"])
+        query_result = search.doSearch(values["query_input"], values["score_selector"], values["k"])
 
         if len(query_result.show_episode_names())==0:
             window["results"].update(['','','','','','','','','','','','','' ,'No results were found'])
@@ -51,7 +50,7 @@ while True:
         else:
             window["results"].update(query_result.show_episode_names())
             results_available=True
-        window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a transcript for extra info")
+        window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a show episode for extra info")
     if event == 'results':
         if results_available:
             [show_name, episode_name] = values['results'][0].split(" : ")

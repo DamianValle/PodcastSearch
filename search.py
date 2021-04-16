@@ -53,9 +53,6 @@ def doSearch(word, score_mode,k=10,):
 
         for hit in res['hits']['hits']:
 
-            #print(hit["_source"]["title"])
-            #print("uri: ", parse_filename2uri(hit["_source"]["title"]))
-
             show_uri, episode_uri = parse_filename2uri(hit["_source"]["title"])
 
             meta_search_object = {
@@ -79,10 +76,10 @@ def doSearch(word, score_mode,k=10,):
 
             metadata = search(es, 'metadata', meta_search_object)
 
-            hit["metadata"] = metadata['hits']['hits'][0]        
+            hit["metadata"] = metadata['hits']['hits'][0]
 
         return Results.createFromSearch(res, search_word=word)
             
 
 if __name__ == '__main__':
-    doSearch(search_word)
+    doSearch(search_word, score_mode='avg')
