@@ -1,7 +1,12 @@
 import PySimpleGUI as sg
 import search
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
-sg.theme('DarkBlue13')  # Add a touch of color
+spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
+
+sg.theme('Reddit')
+
 left_column = [
     [
         sg.In(size=(30, 1), enable_events=True, key="query_input"),  # search box
@@ -21,6 +26,7 @@ right_column = [
     [sg.MLine(key='extra_info', size=(70, 30), autoscroll=False)]
     # [sg.Text(size=(60, 30), key="extra_info", text="\n \n \n \n \n \n \n \n \n \n \n \n \n \n")]
 ]
+
 layout = [
     [
         sg.Column(left_column),
@@ -55,7 +61,7 @@ while True:
         if results_available:
             [show_name, episode_name] = values['results'][0].split(" : ")
             window["extra_info"].update("")
-            query_result.print_description(cprint, show_name, episode_name)
+            query_result.print_description(cprint, show_name, episode_name, spotify)
             # cprint(query_result.string_description(show_name, episode_name), text_color="black", background_color="white")
             window["extra_info"].set_vscroll_position(0)
 
