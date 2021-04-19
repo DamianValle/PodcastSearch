@@ -1,6 +1,7 @@
 from utils import *
 import datetime
 import pprint
+import requests
 
 class Results:
     time = None
@@ -33,10 +34,18 @@ class Results:
         ep = show['episodes'][episode_name]
         episode_uri = ep["episode_uri"]
 
-        show_results = spotify.show(show_uri, market='US')
-        ep_results = spotify.episode(episode_uri, market='US')
-        print("show img: ", show_results['images'][0]['url'])
-        print("ep img: ", ep_results['images'][0]['url'])
+        try:
+            show_results = spotify.show(show_uri, market='US')
+            ep_results = spotify.episode(episode_uri, market='US')
+            print("show img: ", show_results['images'][0]['url'])
+            print("ep img: ", ep_results['images'][0]['url'])
+
+            img_data = requests.get(ep_results['images'][0]['url']).content
+            with open('tmp/ep.jpg', 'wb') as handler:
+                handler.write(img_data)
+        
+        except:
+            print("URI removed from Spotify.")
 
         cprint(show_name, text_color="dark red")
         cprint(f"Show Description: {show['show_description']} \n", background_color='mint cream')
