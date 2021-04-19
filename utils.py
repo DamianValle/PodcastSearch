@@ -1,5 +1,5 @@
-import json
 from pprint import pprint
+import datetime
 
 def find_time(search_word, item):
     for word_item in item["words"]:
@@ -19,3 +19,7 @@ def parse_filename2uri(filename):
     output: show_uri, episode_uri
     """
     return filename.split("_")[1][:-5].split("/")[0], filename.split("_")[1][:-5].split("/")[1]
+
+def seconds_to_time(seconds):
+    return str(datetime.timedelta(seconds=round(parse_time(seconds))))
+

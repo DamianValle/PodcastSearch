@@ -1,4 +1,5 @@
 from utils import *
+import math
 import datetime
 
 class Results:
@@ -35,14 +36,15 @@ class Results:
         cprint(f"Episode Description: {ep['episode_description']} \n", background_color='mint cream')
 
         cprint("CLIPS:  \n", text_color="dark blue")
-        for clip_transcript, clip_time in zip(ep["clips"], ep["clip_times"]):
-            cprint(f"Start time: ", clip_time, background_color='mint cream')
-            cprint(clip_transcript, background_color='mint cream')
+        for clip in ep["clips"]:
+            cprint(f"Start time: ", clip['start_time'], background_color='mint cream')
+            cprint(f"End time: ", clip['end_time'], background_color='mint cream')
+            cprint(clip['transcript'], background_color='mint cream')
             cprint("\n\n")
 
 
     @staticmethod
-    def createFromSearch(res, time=None, search_word=None):
+    def createFromSearch(res, time=None, search_word=None, interval_size=1):
         shows = {}
         for hit in res['hits']['hits']:
             show_name = hit["metadata"]["_source"]["show_name"]
@@ -53,12 +55,27 @@ class Results:
                 shows[show_name] = {'show_name': show_name, 'show_description': show_description, 'episodes': {}}
 
             if not episode_name in shows[show_name]['episodes']:
-                shows[show_name]['episodes'][episode_name] = {'episode_name': episode_name, 'episode_description': episode_description, 'clips': [], 'clip_times': []}
-                  
-            for item in hit["_source"]["clips"]:
+                shows[show_name]['episodes'][episode_name] = {'episode_name': episode_name, 'episode_description': episode_description, 'clips': []}
+
+            clips = hit["_source"]["clips"]
+            index = 0
+            while(index < len(clips)):
+                item = clips[index]
                 if search_word in item['transcript']:
-                    shows[show_name]['episodes'][episode_name]['clips'].append(item["transcript"])
-                    startTime = str(datetime.timedelta(seconds=round(parse_time(item["words"][0]["startTime"]))))
-                    shows[show_name]['episodes'][episode_name]['clip_times'].append(startTime)
+
+                    intervals_start = math.floor((interval_size - 1) / 2)
+                    intervals_end = interval_size - intervals_start
+                    start_index = max(index - intervals_start, 0)
+                    end_index = min(index + intervals_end, len(hit["_source"]["clips"]))
+                    transcripts = hit["_source"]["clips"][start_index:end_index]
+
+                    full_transcript = "\n".join(map(lambda t: t["transcript"], transcripts))
+
+                    start_time = seconds_to_time(transcripts[0]["words"][0]["startTime"])
+                    end_time = seconds_to_time(transcripts[-1]["words"][-1]["endTime"])
+
+                    shows[show_name]['episodes'][episode_name]['clips'].append({'transcript': full_transcript, 'start_time': start_time, 'end_time': end_time})
+                    index = end_index - 1
+                index += 1
 
         return Results(time, shows)
