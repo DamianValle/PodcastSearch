@@ -1,7 +1,17 @@
 import PySimpleGUI as sg
 import search
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from utils import *
 
-sg.theme('DarkBlue13')  # Add a touch of color
+image_elem = sg.Image(size=(200, 200), data=get_img_data('img/logo.png', maxsize=(200, 200), first=True))
+
+
+
+spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
+
+sg.theme('Reddit')
+
 left_column = [
     [
         sg.In(size=(30, 1), enable_events=True, key="query_input"),  # search box
@@ -21,11 +31,18 @@ right_column = [
     [sg.MLine(key='extra_info', size=(70, 30), autoscroll=False)]
     # [sg.Text(size=(60, 30), key="extra_info", text="\n \n \n \n \n \n \n \n \n \n \n \n \n \n")]
 ]
+
+img_column = [
+    [image_elem]
+]
+
 layout = [
     [
         sg.Column(left_column),
         sg.VSeperator(),
-        sg.Column(right_column)
+        sg.Column(right_column),
+        sg.VSeperator(),
+        sg.Column(img_column)
     ]
 ]
 
@@ -55,8 +72,12 @@ while True:
         if results_available:
             [show_name, episode_name] = values['results'][0].split(" : ")
             window["extra_info"].update("")
-            query_result.print_description(cprint, show_name, episode_name)
-            # cprint(query_result.string_description(show_name, episode_name), text_color="black", background_color="white")
+
+            query_result.print_description(cprint, show_name, episode_name, spotify)
+            query_result.update_preview(show_name, episode_name, spotify)
+
+            image_elem.update(data=get_img_data("img/tmp.jpg", maxsize=(200, 200), first=True))
+
             window["extra_info"].set_vscroll_position(0)
 
 window.close()
