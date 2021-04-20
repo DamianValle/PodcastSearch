@@ -42,6 +42,10 @@ class Results:
             img_data = requests.get(ep_results['images'][0]['url']).content
             with open('img/tmp.jpg', 'wb') as handler:
                 handler.write(img_data)
+
+            audio_data = requests.get(ep_results['audio_preview_url']).content
+            with open('img/tmp.mp3', 'wb') as handler:
+                handler.write(audio_data)
         
         except Exception as e:
             print(e)

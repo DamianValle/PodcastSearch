@@ -3,6 +3,7 @@ import search
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from utils import *
+from pygame import mixer
 
 image_elem = sg.Image(size=(200, 200), data=get_img_data('img/logo.png', maxsize=(200, 200), first=True))
 
@@ -34,7 +35,9 @@ right_column = [
 ]
 
 img_column = [
-    [image_elem]
+    [image_elem],
+    [sg.Button('Play'),
+    sg.Button('Pause')]
 ]
 
 layout = [
@@ -43,7 +46,7 @@ layout = [
         sg.VSeperator(),
         sg.Column(right_column),
         sg.VSeperator(),
-        sg.Column(img_column)
+        sg.Column(img_column, element_justification='center')
     ]
 ]
 
@@ -80,5 +83,13 @@ while True:
             image_elem.update(data=get_img_data("img/tmp.jpg", maxsize=(200, 200), first=True))
 
             window["extra_info"].set_vscroll_position(0)
+
+    if event == 'Play':
+        mixer.init()
+        mixer.music.load("img/tmp.mp3")
+        mixer.music.play()
+    
+    if event == 'Pause':
+        mixer.music.pause()
 
 window.close()
