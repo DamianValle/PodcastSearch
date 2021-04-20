@@ -30,19 +30,29 @@ def doSearch(word, score_mode,k=10,interval_size=1):
         search_object = { "from" : 0,
         "size" : k,
         # 'explain': True,
-        'query': { 
+        'query': {
            "nested": {
                 "path": "clips",
                 "query": {
-                    "bool": {
-                        "should": [
-                            {
-                            "match_phrase": {
-                                "clips.transcript": word
+                    "function_score": {
+                        "field_value_factor": {
+                            "field": "confidence",
+                            "factor": 1.0,
+                            "modifier": "none",
+                            "missing": 1
+                        },
+                        "query": {
+                            "bool": {
+                                "should": [
+                                    {
+                                    "match_phrase": {
+                                        "clips.transcript": word
+                                    }
+                                    }
+                                ],
+                                "minimum_should_match": 1
                             }
-                            }
-                        ],
-                        "minimum_should_match": 1
+                        }
                     }
                 },
                 "score_mode": score_mode
