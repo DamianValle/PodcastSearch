@@ -14,7 +14,6 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
   
-
 def create_index(es, index_name='podcasts'):
     created = False
     # index settings

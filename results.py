@@ -38,8 +38,6 @@ class Results:
         try:
             show_results = spotify.show(show_uri, market='US')
             ep_results = spotify.episode(episode_uri, market='US')
-            print("show img: ", show_results['images'][0]['url'])
-            print("ep img: ", ep_results['images'][0]['url'])
 
             img_data = requests.get(ep_results['images'][0]['url']).content
             with open('img/tmp.jpg', 'wb') as handler:
@@ -82,25 +80,36 @@ class Results:
             if not episode_name in shows[show_name]['episodes']:
                 shows[show_name]['episodes'][episode_name] = {'episode_name': episode_name, 'episode_description': episode_description, 'clips': [], 'episode_uri': episode_uri}
 
-            clips = hit["_source"]["clips"]
-            index = 0
-            while(index < len(clips)):
-                item = clips[index]
-                if search_word in item['transcript']:
+            for clip in hit["inner_hits"]["clips"]["hits"]["hits"]:
+                full_transcript = clip["_source"]["transcript"]
+                start_time = seconds_to_time(clip["_source"]["words"][0]["startTime"])
+                end_time = seconds_to_time(clip["_source"]["words"][-1]["endTime"])
 
-                    intervals_start = math.floor((interval_size - 1) / 2)
-                    intervals_end = interval_size - intervals_start
-                    start_index = max(index - intervals_start, 0)
-                    end_index = min(index + intervals_end, len(hit["_source"]["clips"]))
-                    transcripts = hit["_source"]["clips"][start_index:end_index]
-
-                    full_transcript = "\n".join(map(lambda t: t["transcript"], transcripts))
-
-                    start_time = seconds_to_time(transcripts[0]["words"][0]["startTime"])
-                    end_time = seconds_to_time(transcripts[-1]["words"][-1]["endTime"])
-
-                    shows[show_name]['episodes'][episode_name]['clips'].append({'transcript': full_transcript, 'start_time': start_time, 'end_time': end_time})
-                    index = end_index - 1
-                index += 1
+                shows[show_name]['episodes'][episode_name]['clips'].append({'transcript': full_transcript, 'start_time': start_time, 'end_time': end_time})
 
         return Results(time, shows)
+
+        #     clips = hit["_source"]["clips"]
+        #     index = 0
+        #     while(index < len(clips)):
+        #         item = clips[index]
+        #         if search_word in item['transcript']:
+
+        #             intervals_start = math.floor((interval_size - 1) / 2)
+        #             intervals_end = interval_size - intervals_start
+        #             start_index = max(index - intervals_start, 0)
+        #             end_index = min(index + intervals_end, len(hit["_source"]["clips"]))
+        #             transcripts = hit["_source"]["clips"][start_index:end_index]
+
+        #             full_transcript = "\n".join(map(lambda t: t["transcript"], transcripts))
+
+        #             start_time = seconds_to_time(transcripts[0]["words"][0]["startTime"])
+        #             end_time = seconds_to_time(transcripts[-1]["words"][-1]["endTime"])
+
+        #             confidence = item["confidence"]
+
+        #             shows[show_name]['episodes'][episode_name]['clips'].append({'transcript': full_transcript, 'start_time': start_time, 'end_time': end_time, 'confidence': confidence})
+        #             index = end_index - 1
+        #         index += 1
+
+        # return Results(time, shows)

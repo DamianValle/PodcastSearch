@@ -55,6 +55,7 @@ def doSearch(word, score_mode,k=10,interval_size=1):
                         }
                     }
                 },
+                "inner_hits": {},
                 "score_mode": score_mode
                 }
             }}
