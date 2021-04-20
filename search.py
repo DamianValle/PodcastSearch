@@ -21,7 +21,7 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-def doSearch(word, score_mode,k=10,):
+def doSearch(word, score_mode,k=10,interval_size=1):
 
     result = {}
 
@@ -88,7 +88,8 @@ def doSearch(word, score_mode,k=10,):
 
             hit["metadata"] = metadata['hits']['hits'][0]
 
-        return Results.createFromSearch(res, search_word=word)
+
+        return Results.createFromSearch(res, search_word=word, interval_size=interval_size)
             
 
 if __name__ == '__main__':

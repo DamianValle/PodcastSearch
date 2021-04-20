@@ -17,7 +17,8 @@ left_column = [
         sg.In(size=(30, 1), enable_events=True, key="query_input"),  # search box
         sg.Button('Search'),  # search button
         sg.Combo([i for i in range(1, 101)], size=(10, 10), key="k", default_value=10),
-        sg.Combo(['sum', 'avg', 'max', 'min'], size=(10, 10), key="score_selector", default_value='avg')
+        sg.Combo(['sum', 'avg', 'max', 'min'], size=(10, 10), key="score_selector", default_value='avg'),
+        sg.Combo([i for i in range(1, 10)], size=(10, 10), key="interval_selector", default_value='1')
 
     ],
     [
@@ -59,7 +60,7 @@ while True:
         The variable query_result is a list of strings.
         These strings will be shown as a result in the GUI.
         """
-        query_result = search.doSearch(values["query_input"], values["score_selector"], values["k"])
+        query_result = search.doSearch(values["query_input"], values["score_selector"], values["k"], interval_size = values["interval_selector"])
 
         if len(query_result.show_episode_names())==0:
             window["results"].update(['','','','','','','','','','','','','' ,'No results were found'])
