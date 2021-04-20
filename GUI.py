@@ -2,24 +2,9 @@ import PySimpleGUI as sg
 import search
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from PIL import Image, ImageTk
-import io
+from utils import *
 
-def get_img_data(f, maxsize=(1200, 850), first=False):
-    """
-    Generate image data using PIL
-    """
-    img = Image.open(f)
-    img.thumbnail(maxsize)
-    if first:                     # tkinter is inactive the first time
-        bio = io.BytesIO()
-        img.save(bio, format="PNG")
-        del img
-        return bio.getvalue()
-    return ImageTk.PhotoImage(img)
-
-filename = 'tmp/img.png'
-image_elem = sg.Image(size=(200, 200), data=get_img_data(filename, maxsize=(200, 200), first=True))
+image_elem = sg.Image(size=(200, 200), data=get_img_data('img/logo.png', maxsize=(200, 200), first=True))
 
 
 
@@ -87,11 +72,12 @@ while True:
         if results_available:
             [show_name, episode_name] = values['results'][0].split(" : ")
             window["extra_info"].update("")
+
             query_result.print_description(cprint, show_name, episode_name, spotify)
+            query_result.update_preview(show_name, episode_name, spotify)
 
-            image_elem.update(data=get_img_data("tmp/ep.jpg", maxsize=(200, 200), first=True))
+            image_elem.update(data=get_img_data("img/tmp.jpg", maxsize=(200, 200), first=True))
 
-            # cprint(query_result.string_description(show_name, episode_name), text_color="black", background_color="white")
             window["extra_info"].set_vscroll_position(0)
 
 window.close()

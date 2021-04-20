@@ -28,7 +28,7 @@ class Results:
         {" : ".join(ep["clips"])}
         '''
 
-    def print_description(self, cprint, show_name, episode_name, spotify):
+    def update_preview(self, show_name, episode_name, spotify):
         show = self.shows[show_name]
         show_uri = show["show_uri"]
         ep = show['episodes'][episode_name]
@@ -41,11 +41,15 @@ class Results:
             print("ep img: ", ep_results['images'][0]['url'])
 
             img_data = requests.get(ep_results['images'][0]['url']).content
-            with open('tmp/ep.jpg', 'wb') as handler:
+            with open('img/tmp.jpg', 'wb') as handler:
                 handler.write(img_data)
         
-        except:
-            print("URI removed from Spotify.")
+        except Exception as e:
+            print(e)
+
+    def print_description(self, cprint, show_name, episode_name, spotify):
+        show = self.shows[show_name]
+        ep = show['episodes'][episode_name]
 
         cprint(show_name, text_color="dark red")
         cprint(f"Show Description: {show['show_description']} \n", background_color='mint cream')
