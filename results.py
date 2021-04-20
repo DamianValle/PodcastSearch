@@ -53,9 +53,9 @@ class Results:
         ep = show['episodes'][episode_name]
 
         cprint(show_name, text_color="dark red")
-        cprint(f"Show Description: {show['show_description']} \n", background_color='mint cream')
+        cprint(f"Show Description: {deEmojify(show['show_description'])} \n", background_color='mint cream')
         cprint(episode_name, text_color="dark red")
-        cprint(f"Episode Description: {ep['episode_description']} \n", background_color='mint cream')
+        cprint(f"Episode Description: {deEmojify(ep['episode_description'])} \n", background_color='mint cream')
 
         cprint("CLIPS:  \n", text_color="dark blue")
         for clip in ep["clips"]:

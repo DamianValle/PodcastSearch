@@ -2,6 +2,7 @@ from pprint import pprint
 import datetime
 from PIL import Image, ImageTk
 import io
+import re
 
 def get_img_data(f, maxsize=(1200, 850), first=False):
     """
@@ -38,3 +39,6 @@ def parse_filename2uri(filename):
 def seconds_to_time(seconds):
     return str(datetime.timedelta(seconds=round(parse_time(seconds))))
 
+def deEmojify(text):
+    regrex_pattern = re.compile(pattern = "[^\x00-\x7F]+")
+    return regrex_pattern.sub(r'',text)

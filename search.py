@@ -88,7 +88,6 @@ def doSearch(word, score_mode,k=10,interval_size=1):
 
             hit["metadata"] = metadata['hits']['hits'][0]
 
-
         return Results.createFromSearch(res, search_word=word, interval_size=interval_size)
             
 
