@@ -39,6 +39,9 @@ def parse_filename2uri(filename):
 def seconds_to_time(seconds):
     return str(datetime.timedelta(seconds=round(parse_time(seconds))))
 
+def millis_to_time(millis):
+    return str(datetime.timedelta(milliseconds=round(millis))).split(".")[0]
+
 def deEmojify(text):
     regrex_pattern = re.compile(pattern = "[^\x00-\x7F]+")
     return regrex_pattern.sub(r'',text)

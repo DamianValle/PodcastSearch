@@ -30,20 +30,12 @@ class Results:
         '''
 
     def update_preview(self, show_name, episode_name, spotify):
-        show = self.shows[show_name]
-        show_uri = show["show_uri"]
-        ep = show['episodes'][episode_name]
-        episode_uri = ep["episode_uri"]
-
         try:
-            show_results = spotify.show(show_uri, market='US')
-            ep_results = spotify.episode(episode_uri, market='US')
-
-            img_data = requests.get(ep_results['images'][0]['url']).content
+            img_data = requests.get(self.ep_results['images'][0]['url']).content
             with open('img/tmp.jpg', 'wb') as handler:
                 handler.write(img_data)
 
-            audio_data = requests.get(ep_results['audio_preview_url']).content
+            audio_data = requests.get(self.ep_results['audio_preview_url']).content
             with open('img/tmp.mp3', 'wb') as handler:
                 handler.write(audio_data)
         
@@ -53,11 +45,19 @@ class Results:
     def print_description(self, cprint, show_name, episode_name, spotify):
         show = self.shows[show_name]
         ep = show['episodes'][episode_name]
+        try:
+            self.ep_results = spotify.episode(ep["episode_uri"], market='US')
+        except:
+            print("No URI found")
+
+        duration = millis_to_time(self.ep_results["duration_ms"])
+        release_date = self.ep_results["release_date"]
 
         cprint(show_name, text_color="dark red")
         cprint(f"Show Description: {deEmojify(show['show_description'])} \n", background_color='mint cream')
         cprint(episode_name, text_color="dark red")
         cprint(f"Episode Description: {deEmojify(ep['episode_description'])} \n", background_color='mint cream')
+        cprint(f"Duration: {duration}, Release date: {release_date} \n", background_color='mint cream')
 
         cprint("CLIPS:  \n", text_color="dark blue")
         for clip in ep["clips"]:
