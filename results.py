@@ -3,6 +3,7 @@ import math
 import datetime
 import pprint
 import requests
+import webbrowser
 
 class Results:
     time = None
@@ -29,6 +30,9 @@ class Results:
         {" : ".join(ep["clips"])}
         '''
 
+    def openurl(self):
+        webbrowser.open(self.ep_results["uri"])
+
     def update_preview(self, show_name, episode_name, spotify):
         try:
             img_data = requests.get(self.ep_results['images'][0]['url']).content
@@ -47,11 +51,14 @@ class Results:
         ep = show['episodes'][episode_name]
         try:
             self.ep_results = spotify.episode(ep["episode_uri"], market='US')
+            duration = millis_to_time(self.ep_results["duration_ms"])
+            release_date = self.ep_results["release_date"]
         except:
             print("No URI found")
+            duration = '?'
+            release_date = '?'
 
-        duration = millis_to_time(self.ep_results["duration_ms"])
-        release_date = self.ep_results["release_date"]
+        
 
         cprint(show_name, text_color="dark red")
         cprint(f"Show Description: {deEmojify(show['show_description'])} \n", background_color='mint cream')

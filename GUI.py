@@ -37,7 +37,8 @@ right_column = [
 img_column = [
     [image_elem],
     [sg.Button('Play'),
-    sg.Button('Pause')]
+    sg.Button('Pause')],
+    [sg.Button('Open on Spotify')]
 ]
 
 layout = [
@@ -91,5 +92,8 @@ while True:
     
     if event == 'Pause':
         mixer.music.pause()
+
+    if event == 'Open on Spotify':
+        query_result.openurl()
 
 window.close()
