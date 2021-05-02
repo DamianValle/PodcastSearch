@@ -45,7 +45,7 @@ def doSearch(word, score_mode,k=10,interval_size=1):
                             "bool": {
                                 "should": [
                                     {
-                                    "match_phrase": {
+                                    "match": {
                                         "clips.transcript": word
                                     }
                                     }
