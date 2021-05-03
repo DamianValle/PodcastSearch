@@ -86,6 +86,7 @@ def create_and_index_metadata(es, index_name='metadata'):
 
     fileDir = os.path.dirname(os.path.realpath('__file__'))
     filename = '../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset/metadata-summarization-testset.tsv'
+    #filename = 'podcasts-no-audio-13GB/spotify-podcasts-2020/metadata-summarization-testset.tsv'
     #filename = '..\podcasts-no-audio-13GB\spotify-podcasts-2020-summarization-testset\metadata-summarization-testset.tsv'
     print(os.path.join(fileDir, filename))
 
@@ -145,7 +146,7 @@ if __name__ == '__main__':
         es.indices.delete(index='podcasts', ignore=[400, 404])
         create_index(es)
 
-        for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020-summarization-testset'):
+        for subdir, dirs, files in os.walk(r'../podcasts-no-audio-13GB/spotify-podcasts-2020/podcasts-transcripts-summarization-testset'):
             for filename in files:
                 filepath = subdir + os.sep + filename
                 #if filepath.endswith(".tsv"):
