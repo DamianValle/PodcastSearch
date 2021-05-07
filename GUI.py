@@ -65,7 +65,7 @@ while True:
         These strings will be shown as a result in the GUI.
         """
         query_result = search.doSearch(values["query_input"], values["score_selector"], values["k"], interval_size = values["interval_selector"])
-
+        show_and_eps = query_result.get_show_and_ep()
         if len(query_result.show_episode_names())==0:
             window["results"].update(['','','','','','','','','','','','','' ,'No results were found'])
             results_available=False
@@ -75,9 +75,10 @@ while True:
         window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a show episode for extra info")
     if event == 'results':
         if results_available:
-            [show_name, episode_name] = values['results'][0].split(" : ")
+            list_vals=window["results"].get_list_values()
+            pos=list_vals.index(values['results'][0])
+            (show_name, episode_name) = show_and_eps[pos]
             window["extra_info"].update("")
-
             query_result.print_description(cprint, show_name, episode_name, spotify)
             query_result.update_preview(show_name, episode_name, spotify)
 
