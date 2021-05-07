@@ -45,11 +45,14 @@ def doSearch(word, score_mode,k=10,interval_size=1):
                             "bool": {
                                 "should": [
                                     {
-                                    "match": {
-                                        "clips.transcript": word
-                                    }
-                                    }
-                                ],
+                                        "query_string": {
+                                            "query": word,
+                                            "fields": [
+                                                "clips.transcript"
+                                                ],
+                                            "default_operator": "and",
+                                        }
+                                    }],
                                 "minimum_should_match": 1
                             }
                         }
