@@ -34,30 +34,19 @@ def doSearch(word, score_mode,k=10,interval_size=1):
            "nested": {
                 "path": "clips",
                 "query": {
-                    "function_score": {
-                        "field_value_factor": {
-                            "field": "confidence",
-                            "factor": 1.0,
-                            "modifier": "none",
-                            "missing": 1
-                        },
-                        "query": {
-                            "bool": {
-                                "should": [
-                                    {
-                                    "match": {
-                                        "clips.transcript": word
-                                    }
-                                    }
-                                ],
-                                "minimum_should_match": 1
-                            }
+                        "bool": {
+                            "must": [
+                                {"multi_match": {
+                                    "query": word,
+                                    "operator": "or",
+                                    "fields": ["clips.transcript"]
+                                }
+                            }]
                         }
+                    },
+                    "inner_hits": {},
+                    "score_mode": score_mode
                     }
-                },
-                "inner_hits": {},
-                "score_mode": score_mode
-                }
             }}
 
         res = search(es, 'podcasts', search_object)
