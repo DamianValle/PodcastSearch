@@ -4,6 +4,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from utils import *
 from pygame import mixer
+from audioplayer import AudioPlayer
 
 image_elem = sg.Image(size=(200, 200), data=get_img_data('img/logo.png', maxsize=(200, 200), first=True))
 
@@ -86,12 +87,11 @@ while True:
             window["extra_info"].set_vscroll_position(0)
 
     if event == 'Play':
-        mixer.init()
-        mixer.music.load("img/tmp.mp3")
-        mixer.music.play()
+        player = AudioPlayer("img/tmp.mp3")
+        player.play()
     
     if event == 'Pause':
-        mixer.music.pause()
+        player.stop() 
 
     if event == 'Open on Spotify':
         query_result.openurl()
