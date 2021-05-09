@@ -75,7 +75,7 @@ while True:
         window["extra_info"].update("\n \n \n \n \n \n \n \n \n \n \n \n \n \n Click on a show episode for extra info")
     if event == 'results':
         if results_available:
-            [show_name, episode_name] = values['results'][0].split(" : ")
+            [show_name, episode_name] = values['results'][0].split(" || ")[:2]
             window["extra_info"].update("")
 
             query_result.print_description(cprint, show_name, episode_name, spotify)

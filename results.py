@@ -14,7 +14,7 @@ class Results:
         self.shows = shows
 
     def show_episode_names(self):
-        return [(show['show_name'] +" : "+ episode['episode_name'])  for show in self.shows.values() for episode in show['episodes'].values()]
+        return [(show['show_name'] +" || "+ episode['episode_name'])  for show in self.shows.values() for episode in show['episodes'].values()]
 
     def string_description(self, show_name, episode_name):
         show = self.shows[show_name]
