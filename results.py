@@ -34,7 +34,8 @@ class Results:
         '''
 
     def openurl(self):
-        webbrowser.open(self.ep_results["uri"])
+        print(uri_to_link(self.ep_results["uri"]))
+        webbrowser.open(uri_to_link(self.ep_results["uri"]))
 
     def update_preview(self, show_name, episode_name, spotify):
         try:

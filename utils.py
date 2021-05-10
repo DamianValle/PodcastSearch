@@ -17,6 +17,9 @@ def get_img_data(f, maxsize=(1200, 850), first=False):
         return bio.getvalue()
     return ImageTk.PhotoImage(img)
 
+def uri_to_link(uri):
+    return "http://open.spotify.com/episode/" + uri.split(':')[-1]
+
 def find_time(search_word, item):
     for word_item in item["words"]:
         if word_item["word"] == search_word:
