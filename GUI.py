@@ -15,17 +15,17 @@ sg.theme('Reddit')
 
 left_column = [
     [
-        sg.In(size=(30, 1), enable_events=True, key="query_input"),  # search box
+        sg.In(size=(25, 1), enable_events=True, key="query_input"),  # search box
         sg.Button('Search'),  # search button
-        sg.Combo([i for i in range(1, 101)], size=(10, 10), key="k", default_value=10),
-        sg.Combo(['sum', 'avg', 'max', 'min'], size=(10, 10), key="score_selector", default_value='avg'),
+        sg.Combo([i for i in range(1, 101)], size=(3, 3), key="k", default_value=10),
+        sg.Combo(['sum', 'avg', 'max', 'min'], size=(4, 4), key="score_selector", default_value='avg'),
         sg.Combo([ 'union', 'intersection', 'phrase', 'combo intersection-union'], size=(10, 10), key="mode_selector", default_value='union'),
-        sg.Combo([i for i in range(1, 10)], size=(10, 10), key="interval_selector", default_value='1')
+        sg.Combo([i for i in range(1, 10)], size=(3, 3), key="interval_selector", default_value='1')
 
     ],
     [
         sg.Listbox(
-            values=['','','','','','','','','','','','','','Results will appear here'], enable_events=True, size=(95, 30), key="results"  # results
+            values=['','','','','','','','','','','','','','Results will appear here'], enable_events=True, size=(80, 30), key="results"  # results
         ),
     ],
 ]
