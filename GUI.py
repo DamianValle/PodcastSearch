@@ -19,7 +19,7 @@ left_column = [
         sg.Button('Search'),  # search button
         sg.Combo([i for i in range(1, 101)], size=(10, 10), key="k", default_value=10),
         sg.Combo(['sum', 'avg', 'max', 'min'], size=(10, 10), key="score_selector", default_value='avg'),
-        sg.Combo(['intersection', 'union', 'phrase', 'combo intersection-union'], size=(10, 10), key="mode_selector", default_value='intersection'),
+        sg.Combo([ 'union', 'intersection', 'phrase', 'combo intersection-union'], size=(10, 10), key="mode_selector", default_value='union'),
         sg.Combo([i for i in range(1, 10)], size=(10, 10), key="interval_selector", default_value='1')
 
     ],
