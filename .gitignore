@@ -34,3 +34,5 @@ hs_err_pid*
 .idea/
 
 podcasts-no-audio-13GB/
+
+/img/tmp.*

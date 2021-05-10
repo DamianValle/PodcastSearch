@@ -3,7 +3,6 @@ import search
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from utils import *
-from pygame import mixer
 from audioplayer import AudioPlayer
 
 image_elem = sg.Image(size=(200, 200), data=get_img_data('img/logo.png', maxsize=(200, 200), first=True))
