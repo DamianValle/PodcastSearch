@@ -21,44 +21,157 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-def doSearch(word, score_mode,k=10,interval_size=1):
+def doSearch(word, score_mode,search_mode,k=10,interval_size=1):
 
     result = {}
-
     es = connect_elasticsearch()
     if es is not None:
-        search_object = { "from" : 0,
-        "size" : k,
-        # 'explain': True,
-        'query': {
-           "nested": {
-                "path": "clips",
-                "query": {
-                    "function_score": {
-                        "field_value_factor": {
-                            "field": "confidence",
-                            "factor": 1.0,
-                            "modifier": "none",
-                            "missing": 1
-                        },
-                        "query": {
-                            "bool": {
-                                "should": [
-                                    {
-                                    "match": {
-                                        "clips.transcript": word
-                                    }
-                                    }
-                                ],
-                                "minimum_should_match": 1
+
+        if search_mode=='intersection':
+            search_object = { "from" : 0,
+            "size" : k,
+            # 'explain': True,
+            'query': {
+               "nested": {
+                    "path": "clips",
+                    "query": {
+                        "function_score": {
+                            "field_value_factor": {
+                                "field": "confidence",
+                                "factor": 1.0,
+                                "modifier": "none",
+                                "missing": 1
+                            },
+                            "query": {
+                                "bool": {
+                                    "should": [
+                                        {
+                                            "query_string": {
+                                                "query": word,
+                                                "fields": [
+                                                    "clips.transcript"
+                                                    ],
+                                                "default_operator": "and",
+                                            }
+                                        }
+                                    ],
+                                    "minimum_should_match": 1
+                                }
                             }
                         }
+                    },
+                    "inner_hits": {},
+                    "score_mode": score_mode
                     }
-                },
-                "inner_hits": {},
-                "score_mode": score_mode
-                }
-            }}
+                }}
+        elif search_mode=='union':
+            search_object = { "from" : 0,
+            "size" : k,
+            # 'explain': True,
+            'query': {
+               "nested": {
+                    "path": "clips",
+                    "query": {
+                        "function_score": {
+                            "field_value_factor": {
+                                "field": "confidence",
+                                "factor": 1.0,
+                                "modifier": "none",
+                                "missing": 1
+                            },
+                            "query": {
+                                "bool": {
+                                    "should": [
+                                        {
+                                            "match": {
+                                                "clips.transcript": word
+                                            }
+                                        }
+                                    ],
+                                    "minimum_should_match": 1
+                                }
+                            }
+                        }
+                    },
+                    "inner_hits": {},
+                    "score_mode": score_mode
+                    }
+                }}
+        elif search_mode == 'phrase':
+            search_object = { "from" : 0,
+            "size" : k,
+            # 'explain': True,
+            'query': {
+               "nested": {
+                    "path": "clips",
+                    "query": {
+                        "function_score": {
+                            "field_value_factor": {
+                                "field": "confidence",
+                                "factor": 1.0,
+                                "modifier": "none",
+                                "missing": 1
+                            },
+                            "query": {
+                                "bool": {
+                                    "should": [
+                                        {
+                                            "match_phrase": {
+                                                "clips.transcript": word
+                                            }
+                                        }
+                                    ],
+                                    "minimum_should_match": 1
+                                }
+                            }
+                        }
+                    },
+                    "inner_hits": {},
+                    "score_mode": score_mode
+                    }
+                }}
+        elif search_mode == 'combo intersection-union':
+            search_object = { "from" : 0,
+            "size" : k,
+            # 'explain': True,
+            'query': {
+               "nested": {
+                    "path": "clips",
+                    "query": {
+                        "function_score": {
+                            "field_value_factor": {
+                                "field": "confidence",
+                                "factor": 1.0,
+                                "modifier": "none",
+                                "missing": 1
+                            },
+                            "query": {
+                                "bool": {
+                                    "should": [
+                                        {
+                                            "query_string": {
+                                                "query": word,
+                                                "fields": [
+                                                    "clips.transcript"
+                                                    ],
+                                                "default_operator": "and",
+                                            }
+                                        },
+                                        {
+                                            "match": {
+                                                "clips.transcript": word
+                                            }
+                                        }
+                                    ],
+                                    "minimum_should_match": 1
+                                }
+                            }
+                        }
+                    },
+                    "inner_hits": {},
+                    "score_mode": score_mode
+                    }
+                }}
 
         res = search(es, 'podcasts', search_object)
 
