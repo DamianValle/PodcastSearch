@@ -35,14 +35,21 @@ Podcast data:
 
 The dataset should extracted into the "/podcasts-no-audio13GB" folder.
 
-needed for GUI:
+* needed for GUI:
 
 ```
 sudo apt-get install python3-tk
 sudo apt install tkinter
 ```
 
-python packages needed:
+* needed for Spotify Web API
+
+```
+export SPOTIPY_CLIENT_ID='your-client-id'
+export SPOTIPY_CLIENT_SECRET='your-client-secret'
+```
+
+* python packages needed:
 
 ```
 pip install requirements.txt
