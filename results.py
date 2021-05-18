@@ -37,6 +37,7 @@ class Results:
         webbrowser.open(uri_to_link(self.ep_results["uri"]))
 
     def update_preview(self, show_name, episode_name, spotify):
+        pprint.pprint(self.ep_results)
         try:
             img_data = requests.get(self.ep_results['images'][0]['url']).content
             with open('img/tmp.jpg', 'wb') as handler:
