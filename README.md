@@ -1,56 +1,53 @@
-# PodcastSearch
+<p align="left"><img src="/img/logo.png" width="150"/></p>
 
-# Setting up (local) Elasticsearch and Kibana
+# Spotify Podcast Search Engine
 
-Elasticsearch:
+Podcast Search Engine powered by ElasticSearch implemented using python indexing the Spotify Podcast Dataset.
 
-- download elasticsearch: https://www.elastic.co/start
-- unzip downloaded file
-- go to unzipped folder and run bin/elasticsearch
-- To see if it's working: open browser and go to http://localhost:9200/
+## System architecture
 
-Kibana:
+<p align="center"><img src="/img/overview.png" width="700"/></p>
 
-- download kibana: https://www.elastic.co/start
-- unzip downloaded file
-- go to unzipped folder and run bin/kibana
-- To see if it's working: open browser and go to http://localhost:5601/app/management/data/index_management/indices This should show your local indices
+## Podcast data:
 
-Adding and retrieving indices:
-
-- This happens with https requests
-- see readme of https://github.com/elastic/elasticsearch for examples using curl
-
-Podcast data:
-
-- download at: [Spotify Podcast Dataset](https://podcastsdataset.byspotify.com/)
+- Available at: [Spotify Podcast Dataset](https://podcastsdataset.byspotify.com/)
 - Structure of the data:
-  - each podcast is a Json file divided into pieces (transcripts) with the following structure
-    - transcript: all the words as a text file
-    - confidence: float number between 0 and 1
-    - words: each word individually with start and end time
-  - There is also a metadata file:
-    - contains name, uri, description, publisher, language, episode name, duration and links to uri's and files in table form
+  - JSON file divided into pieces (transcripts) with the following structure
+    - Transcript: all the words as a text file
+    - Confidence: float number between 0 and 1
+    - Words: each word individually with start and end time
+  - Metadata file:
+    - Contains podcast name, URI, description, publisher, language, episode name and duration.
 - There is a smaller (1.2 GB) test sample with the same structure as the other files: spotify-podcasts-2020-summarization-testset
 
-The dataset should extracted into the "/podcasts-no-audio13GB" folder.
+The dataset should extracted into the ```/podcasts-no-audio13GB``` folder.
 
-* needed for GUI:
+## Needed for GUI and Spotify Web API
+
+```
+pip install requirements.txt
+```
 
 ```
 sudo apt-get install python3-tk
 sudo apt install tkinter
 ```
 
-* needed for Spotify Web API
-
 ```
 export SPOTIPY_CLIENT_ID='your-client-id'
 export SPOTIPY_CLIENT_SECRET='your-client-secret'
 ```
 
-* python packages needed:
+## Elasticsearch setup:
 
-```
-pip install requirements.txt
-```
+- download elasticsearch: https://www.elastic.co/start
+- unzip downloaded file
+- go to unzipped folder and run bin/elasticsearch
+- To see if it's working: open browser and go to http://localhost:9200/
+
+## Kibana setup:
+
+- download kibana: https://www.elastic.co/start
+- unzip downloaded file
+- go to unzipped folder and run bin/kibana
+- To see if it's working: open browser and go to http://localhost:5601/app/management/data/index_management/indices This should show your local indices
